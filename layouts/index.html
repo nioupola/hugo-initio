@@ -14,13 +14,17 @@
                           (and (eq $stype "recentwork") (.Site.Params.showRecentWorks))
                           (and (eq $stype "download") (.Site.Params.showDownloads))
                           (and (eq $stype "client") (.Site.Params.showClients))
+                          (eq $stype "aboutme")
                           (eq $stype "single")) }}
 
                      <div class="row section featured topspace">
                        <h2 class="section-title">
                          <span>{{.Title}}</span>
                        </h2>
-                     {{ if eq $stype "service" }}
+                     {{ if eq $stype "aboutme" }}
+                       {{ partial "home/aboutme.html" . }}
+
+                     {{ else if eq $stype "service" }}
                        {{ partial "home/services.html" . }}
 
                      {{ else if eq $stype "recentwork" }}
