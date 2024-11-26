@@ -1,14 +1,14 @@
 <footer id="footer">
 	<div class="container">
 		<div class="row">
-			{{ if .Site.Params.showFooterContact }}
+			{{ if .Site.Params.showFooterTextWidget }}
 			<div class="col-md-3 widget">
-				<h3 class="widget-title">{{ i18n "footer_contact_title" }}</h3>
+				<h3 class="widget-title">{{ .Site.Params.footerTextTitle }}</h3>
 				<div class="widget-body">
-					<p>{{ if .Site.Params.phone }}{{ .Site.Params.phone }}<br>{{ end }}
-					{{ if .Site.Params.email }}<a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a><br>{{ end }}
-					<br>
-					{{ if .Site.Params.address }}{{ .Site.Params.address }}{{ end }}
+					<p>
+						<i class="fa-solid fa-location-dot"></i> {{ .Site.Params.footerText1 | markdownify }}
+						<br/>
+						<i class="fa-solid fa-location-dot"></i> {{ .Site.Params.footerText2 | markdownify }}
 					</p>
 				</div>
 			</div>
@@ -29,23 +29,24 @@
 			</div>
 			{{ end }}
 
-			{{ if .Site.Params.showFooterTextWidget }}
-			<div class="col-md-3 widget">
-				<h3 class="widget-title">{{ i18n "footer_text_title" }}</h3>
-				<div class="widget-body">
-					<p>
-						{{ i18n "footer_text1" . | markdownify }}
-					</p>
-					<p>
-						{{ i18n "footer_text2" . | markdownify }}
-					</p>
-				</div>
-			</div>
-			{{ end }}
-
 			{{ if .Site.Params.showFooterFormWidget }}
 			<div class="col-md-3 widget">
 				<h3 class="widget-title">{{ i18n "footer_form_title" }}</h3>
+				<div class="widget-body">
+					<p>{{ if .Site.Params.phone }}{{ .Site.Params.phone }}<br>{{ end }}
+					{{ if .Site.Params.email }}<a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a><br>{{ end }}
+					<br>
+					{{ if .Site.Params.address }}{{ .Site.Params.address }}{{ end }}
+					</p>
+				</div>
+			</div>
+			{{ else }}
+			<div class="col-md-3 widget"></div>
+			{{ end }}
+			
+			{{ if .Site.Params.showFooterContact }}
+			<div class="col-md-3 widget">
+				<h3 class="widget-title">{{ i18n "footer_contact_title" }}</h3>
 				<div class="widget-body">
 					<p>{{ if .Site.Params.phone }}{{ .Site.Params.phone }}<br>{{ end }}
 					{{ if .Site.Params.email }}<a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a><br>{{ end }}
@@ -78,7 +79,7 @@
                                                 {{ else }}
                                                 Copyright &copy; {{ .Site.Params.year }}, {{ .Site.Params.name }}<br>
                                                 {{ end }}
-						Design: <a href="http://www.gettemplate.com" rel="designer">Initio by GetTemplate</a> -
+						Inspired from: <a href="http://www.gettemplate.com" rel="designer">Initio by GetTemplate</a> -
 						Powered by: <a href="https://gohugo.io/" rel="poweredby">Hugo</a>
 					</p>
 				</div>
@@ -90,20 +91,14 @@
 
 
 
-<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
-{{ $template := resources.Get "js/template.js" }}
-{{ $html5shiv := resources.Get "js/html5shiv.js" }}
-{{ $js := (slice $template $html5shiv | resources.Concat "js/bundle.js") | resources.Minify | resources.Fingerprint "sha512" }}
-<script src="{{ $js.Permalink }}" integrity="{{ $js.Data.Integrity }}"></script>
-
 {{ if .Site.Params.disqus -}}
 <script id="dsq-count-scr" src="//{{ .Site.Params.disqus.site }}/count.js" async></script>
 {{ end -}}
 {{ if .Site.Params.google.analytics -}}
 {{ partial "footer/analyticstracking.html" . }}
+{{ end -}}
+{{ if .Site.Params.matomo -}}
+{{ partial "footer/matomo.html" . }}
 {{ end -}}
 </body>
 </html>
