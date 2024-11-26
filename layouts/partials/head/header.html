@@ -1,13 +1,30 @@
-<header id="header">
-  <div id="head" class="parallax" data-parallax-speed="2" style="background-image:url('{{ .Site.BaseURL }}{{ .Site.Params.banner }}');">
+<header id="header" style="position: relative;">
+  {{ if eq .Site.Params.cdn.enable 1 }}
+    <div id="head" class="parallax" data-parallax-speed="2">
+  {{ else }}
+    <!-- <div id="head" class="parallax" data-parallax-speed="2" style="background-image:url('{{ .Site.BaseURL }}{{ .Site.Params.banner }}');"> -->
+    <div id="head" class="parallax" data-parallax-speed="2">
+  {{ end }}
     <h1 id="logo" class="text-center">
-      <img class='img-{{ .Site.Params.avatarclass | default "circle"}}' src="{{ .Site.BaseURL }}{{ .Site.Params.avatar }}" alt="">
+      <a href="/">
+        {{ if eq .Site.Params.cdn.enable 1 }}
+          <img class='img-{{ .Site.Params.avatarclass | default "circle"}}' src="{{ .Site.Params.cdn.url }}{{ .Site.Params.avatar }}" alt="">
+        {{ else }}
+        <img class='img-{{ .Site.Params.avatarclass | default "circle"}}' src="{{ .Site.BaseURL }}{{ .Site.Params.avatar }}" alt="">
+        {{ end }}
+      </a>
       <span class="title">{{ .Site.Params.name }}</span>
       <span class="tagline">{{ .Site.Params.description }}<br>
-        <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a>
+        <!-- <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a> -->
       </span>
    </h1>
+  <div style="position: absolute;top: 1vh;right: 1vw;">
+    {{ range $.Translations }}
+      <a style="color: white;" title="{{ .Language.LanguageName }}" href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>
+    {{ end }}
+  </div>
 </div>
-
-{{ partial "head/menu.html" . }}
 </header>
+{{ if not .Site.Params.hideMenu -}}
+{{ partial "head/menu.html" . }}
+{{ end }}
